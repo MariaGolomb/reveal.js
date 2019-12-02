@@ -1,49 +1,295 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
+    />
 
-		<title>reveal.js</title>
+    <title>reveal.js</title>
 
-		<link rel="stylesheet" href="css/reset.css">
-		<link rel="stylesheet" href="css/reveal.css">
-		<link rel="stylesheet" href="css/theme/black.css">
+    <link rel="stylesheet" href="css/reset.css" />
+    <link rel="stylesheet" href="css/reveal.css" />
+    <link rel="stylesheet" href="css/theme/black.css" />
 
-		<!-- Theme used for syntax highlighting of code -->
-		<link rel="stylesheet" href="lib/css/monokai.css">
+    <!-- Theme used for syntax highlighting of code -->
+    <link rel="stylesheet" href="lib/css/monokai.css" />
 
-		<!-- Printing and PDF exports -->
-		<script>
-			var link = document.createElement( 'link' );
-			link.rel = 'stylesheet';
-			link.type = 'text/css';
-			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
-			document.getElementsByTagName( 'head' )[0].appendChild( link );
-		</script>
-	</head>
-	<body>
-		<div class="reveal">
-			<div class="slides">
-				<section>Slide 1</section>
-				<section>Slide 2</section>
-			</div>
-		</div>
+    <!-- Printing and PDF exports -->
+    <script>
+      var link = document.createElement('link');
+      link.rel = 'stylesheet';
+      link.type = 'text/css';
+      link.href = window.location.search.match(/print-pdf/gi)
+        ? 'css/print/pdf.css'
+        : 'css/print/paper.css';
+      document.getElementsByTagName('head')[0].appendChild(link);
+    </script>
+  </head>
+  <body>
+    <div class="reveal">
+      <div class="slides">
+        <section>
+          <h1>Cross-site scripting</h1>
+        </section>
+        <section>
+          <strong>Cross-Site Scripting (also known as XSS)</strong> is one of
+          the most common application-layer web attacks. <br />
+          This is a type of attack that injects malicious code into web systems,
+          forcing it to produce changed data, replacing links (visible / hidden)
+          or displaying its own advertising on the affected resource.
+        </section>
 
-		<script src="js/reveal.js"></script>
+        <section>
+          <h3>typical Impacts</h3>
+          <ul>
+            <li>
+              Steal user's session, steal sensitive data, rewrite web page,
+              redirect user to phishing or malware site
+            </li>
+            <li>
+              <strong>Most Severe:</strong> install XSS proxy, which allows
+              attacker to observe and direct all user's behavior on vulnerable
+              site and force user to other sites
+            </li>
+          </ul>
+        </section>
+        <section>
+          <section>
+            <h3>How Cross-site Scripting Works</h3>
 
-		<script>
-			// More info about config & dependencies:
-			// - https://github.com/hakimel/reveal.js#configuration
-			// - https://github.com/hakimel/reveal.js#dependencies
-			Reveal.initialize({
-				dependencies: [
-					{ src: 'plugin/markdown/marked.js' },
-					{ src: 'plugin/markdown/markdown.js' },
-					{ src: 'plugin/notes/notes.js', async: true },
-					{ src: 'plugin/highlight/highlight.js', async: true }
-				]
-			});
-		</script>
-	</body>
+            <p>There are two stages to a typical XSS attack:</p>
+            <ul>
+              <li>
+                Inject malicious code into a web page that the victim visits.
+              </li>
+              <li>
+                After the victim visit the web page, malicious code is executed.
+              </li>
+            </ul>
+          </section>
+          <section>
+            <pre><code class="hljs html" style="word-wrap: break-word;">
+		&lt;html&gt;
+		&lt;h1&gt;Most recent comment&lt;/h1&gt;
+		database.latestComment
+		&lt;/html&gt;
+	</code></pre>
+
+            <pre><code class="hljs html" style="word-wrap: break-word;">
+	    &lt;script&gt;doSomethingEvil();&lt;/script&gt;	
+		    </code></pre>
+
+            <pre><code class="hljs html" style="word-wrap: break-word;">
+		&lt;html&gt;
+		&lt;h1&gt;Most recent comment&lt;/h1&gt;
+		&lt;script&gt;doSomethingEvil();&lt;/script&gt;	
+		&lt;/html&gt;
+			</code></pre>
+          </section>
+
+          <section>
+            <img src="./src/how-xss-works-1024x454.png" />
+          </section>
+        </section>
+
+        <section>
+          <h2>Types of XSS:</h2>
+          <ul>
+            <li>Stored XSS Attacks</li>
+            <li>Reflected XSS Attacks</li>
+            <li>DOM Based XSS Attacks</li>
+          </ul>
+        </section>
+        <section>
+          <section><h2>Stored XSS Attacks</h2></section>
+
+          <section>
+            <img src="./src/sorted-XSS.png" />
+          </section>
+        </section>
+
+        <section>
+          <section><h2>Reflected XSS attacks</h2></section>
+          <section>
+			<img src="./src/xss-attack_reflected.png" />
+			<p> http://www.google.com/search?q=flowers+%3Cscript%3Eevil_script()%3C/script%3E </p>
+          </section>
+        </section>
+        <section>
+          <section><h2>DOM Based XSS Attacks</h2></section>
+          <section><img src="./src/DOM-XSS-3.png" /></section>
+        </section>
+
+        <section>
+          <section>
+            <h2>How to prevent XSS attacks</h2>
+          </section>
+          <section>
+            <h5>Filter input on arrival.</h5>
+            <p>
+			The simplest and arguably the easiest form of cross-site scripting 
+			vulnerability elimination would be to pass all external data through a filter. 
+			Such a filter would remove dangerous keywords, for example, the infamous &lt;script&gt; tag, 
+			JavaScript commands, CSS styles, and other dangerous HTML markups (such as those that contain event handlers.)
+            </p>
+		  </section>
+		  <section>
+			  <h5>Escaping </h5>
+			  <p>Escaping is the primary means to avoid cross-site scripting attacks. 
+				  When escaping, you are telling the web browser that the 
+				  data you are sending should be treated as data and should not be 
+				  interpreted in any other way. If an attacker manages to put a malicious 
+				  script on your page, the victim will not be affected because the browser
+				   will not execute the script if it is properly escaped.</p>
+		  </section>
+
+		  <section>
+			  <p>The two most popular escaping libraries are:</p>
+			  <ul>
+				  <li>ESAPI (provided by OWASP)</li>
+				  <li>AntiXSS (provided for Microsoft)</li>
+			  </ul>
+		  </section>
+		  <section>
+			  <h6>HTML escaping</h6>
+			  <p>Use HTML escaping when untrusted data is inserted between HTML opening and closing tags. These are standards tags such as &lt;body&gt;, &lt;div&gt;, &lt;table&gt;, etc. </p>
+			  <pre><code class="hljs html" style="word-wrap: break-word;">&lt;div&gt;If this data is untrusted, it must be HTML-escaped.&lt;/div&gt;
+				</code></pre>
+		  </section>
+		  <section>
+				<h6>JavaScript escaping</h6>
+				<p>Use JavaScript escaping when untrusted data is inserted inside one of your scripts, or in a place where malicious JavaScript may be included. This includes certain HTML attributes 
+					such as style and all event handlers such as onmouseover and onload. </p>
+				<pre><code class="hljs html" style="word-wrap: break-word; width: 1055px;">&lt;script&gt;alert('If this data is untrusted, it must be JavaScript-escaped.')&lt;/script&gt;
+&lt;body onload="If this data is untrusted, it must be JavaScript-escaped."&gt;	
+				  </code></pre>
+			</section>
+			<section>
+					<h6>CSS escaping</h6>
+					<p>Use CSS escaping when untrusted data is inserted inside your CSS styles. Many CSS styles can be used to smuggle a script into your page. </p>
+					<pre><code class="hljs html" style="word-wrap: break-word; width: 1055px;">&lt;div style="background-image: If this data is untrusted, it must be CSS-escaped."&gt;
+					  </code></pre>
+				</section>
+	
+          <section>
+            <h5>Encode data on output.</h5>
+            <p>
+              At the point where user-controllable data is output in HTTP
+              responses, encode the output to prevent it from being interpreted
+              as active content. Depending on the output context, this might
+              require applying combinations of HTML, URL, JavaScript, and CSS
+              encoding.
+            </p>
+          </section>
+          <section>
+            <h5>Use appropriate response headers.</h5>
+            <p>
+              To prevent XSS in HTTP responses that should not contain any HTML
+              or JavaScript, you can use the <strong>Content-Type</strong> and
+              <strong>X-Content-Type-Options</strong> headers to ensure that
+              browsers interpret the responses in the required way.
+            </p>
+          </section>
+          <section>
+            <h5>Content Security Policy.</h5>
+            <p>
+              As a last line of defense, you can use Content Security Policy
+              (CSP) to reduce the severity of any XSS vulnerabilities that still
+              occur. <br>It's a browser side mechanism which allows you to create
+              source whitelists for client side resources of your web
+              application, e.g. JavaScript, CSS, images, etc. CSP via special
+              HTTP header instructs the browser to only execute or render
+              resources from those sources.
+            </p>
+		  </section>
+		  <section>
+				<p>For example this CSP:</p>
+
+				<pre><code class="hljs javascript">Content-Security-Policy: default-src: 'self'; 
+    script-src: 'self' static.domain.tld
+				</code></pre>
+				
+				<p>Will instruct web browser to load all resources only from the page's origin and JavaScript source code files additionally from static.domain.tld.</p>
+		  </section>
+
+          <section>
+            <h6>Additional information about preventing attacks:</h6>
+            <ul>
+              <li>
+                <a
+                  href="https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html"
+                  >https://cheatsheetseries.owasp.org/...
+                </a>
+              </li>
+
+              <li>
+                <a
+                  href="https://www.owasp.org/index.php/XSS_Filter_Evasion_Cheat_Sheet"
+                  >https://www.owasp.org/...
+                </a>
+              </li>
+              <li>
+                <a href="https://content-security-policy.com/"
+                  >https://content-security-policy.com/</a
+                >
+              </li>
+            </ul>
+          </section>
+        </section>
+        <section>
+          <h6>Links for more information:</h6>
+          <ul>
+            <li>
+              <a
+                href="https://www.imperva.com/learn/application-security/cross-site-scripting-xss-attacks/"
+                >https://www.imperva.com/...</a
+              >
+            </li>
+            <li>
+              <a
+                href="https://www.acunetix.com/websitesecurity/cross-site-scripting/"
+                >https://www.acunetix.com/websitesecurity/...</a
+              >
+            </li>
+            <li>
+              <a href="https://www.acunetix.com/blog/articles/persistent-xss/"
+                >https://www.acunetix.com/blog/...</a
+              >
+            </li>
+            <li>
+              <a
+                href="https://www.owasp.org/index.php/Category:OWASP_Top_Ten_Project"
+                >https://www.owasp.org/...</a
+              >
+            </li>
+            <li>
+              <a
+                href="https://portswigger.net/web-security/cross-site-scripting"
+                >https://portswigger.net/...</a
+              >
+            </li>
+          </ul>
+        </section>
+        <section>Thank you for attention.</section>
+      </div>
+    </div>
+
+    <script src="js/reveal.js"></script>
+
+    <script>
+      // More info about config & dependencies:
+      // - https://github.com/hakimel/reveal.js#configuration
+      // - https://github.com/hakimel/reveal.js#dependencies
+      Reveal.initialize({
+        dependencies: [
+          { src: 'plugin/markdown/marked.js' },
+          { src: 'plugin/markdown/markdown.js' },
+          { src: 'plugin/notes/notes.js', async: true },
+          { src: 'plugin/highlight/highlight.js', async: true }
+        ]
+      });
+    </script>
+  </body>
 </html>
