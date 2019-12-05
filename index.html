@@ -33,6 +33,7 @@
         <section>
           <h1>Cross-site scripting</h1>
         </section>
+        <!---
         <section>
           <strong>Cross-Site Scripting (also known as XSS)</strong> is one of
           the most common application-layer web attacks. <br />
@@ -40,6 +41,7 @@
           forcing it to produce changed data, replacing links (visible / hidden)
           or displaying its own advertising on the affected resource.
         </section>
+      -->
 
         <section>
           <h3>typical Impacts</h3>
@@ -113,8 +115,10 @@
         <section>
           <section><h2>Reflected XSS attacks</h2></section>
           <section>
-			<img src="./src/xss-attack_reflected.png" />
-			<p> http://www.google.com/search?q=flowers+%3Cscript%3Eevil_script()%3C/script%3E </p>
+            <img src="./src/xss-attack_reflected.png" />
+            <p>
+              http://www.google.com/search?q=flowers+%3Cscript%3Eevil_script()%3C/script%3E
+            </p>
           </section>
         </section>
         <section>
@@ -129,50 +133,73 @@
           <section>
             <h5>Filter input on arrival.</h5>
             <p>
-			The simplest and arguably the easiest form of cross-site scripting 
-			vulnerability elimination would be to pass all external data through a filter. 
+              The simplest and arguably the easiest form of cross-site scripting
+              vulnerability elimination would be to pass all external data
+              through a filter.
+              <!-- tell
 			Such a filter would remove dangerous keywords, for example, the infamous &lt;script&gt; tag, 
-			JavaScript commands, CSS styles, and other dangerous HTML markups (such as those that contain event handlers.)
+      JavaScript commands, CSS styles, and other dangerous HTML markups (such as those that contain event handlers.)
+      -->
             </p>
-		  </section>
-		  <section>
-			  <h5>Escaping </h5>
-			  <p>Escaping is the primary means to avoid cross-site scripting attacks. 
-				  When escaping, you are telling the web browser that the 
-				  data you are sending should be treated as data and should not be 
-				  interpreted in any other way. If an attacker manages to put a malicious 
-				  script on your page, the victim will not be affected because the browser
-				   will not execute the script if it is properly escaped.</p>
-		  </section>
+          </section>
+          <section>
+            <h5>Escaping</h5>
+            <p>
+              Escaping is the primary means to avoid cross-site scripting
+              attacks. When escaping, you are telling the web browser that the
+              data you are sending should be treated as data and should not be
+              interpreted in any other way.
+              <!--- tell
+                 If an attacker manages to put a
+              malicious script on your page, the victim will not be affected
+              because the browser will not execute the script if it is properly
+              escaped.
+              -->
+            </p>
+          </section>
 
-		  <section>
-			  <p>The two most popular escaping libraries are:</p>
-			  <ul>
-				  <li>ESAPI (provided by OWASP)</li>
-				  <li>AntiXSS (provided for Microsoft)</li>
-			  </ul>
-		  </section>
-		  <section>
-			  <h6>HTML escaping</h6>
-			  <p>Use HTML escaping when untrusted data is inserted between HTML opening and closing tags. These are standards tags such as &lt;body&gt;, &lt;div&gt;, &lt;table&gt;, etc. </p>
-			  <pre><code class="hljs html" style="word-wrap: break-word;">&lt;div&gt;If this data is untrusted, it must be HTML-escaped.&lt;/div&gt;
+          <section>
+            <p>The two most popular escaping libraries are:</p>
+            <ul>
+              <li>ESAPI (provided by OWASP)</li>
+              <li>AntiXSS (provided for Microsoft)</li>
+            </ul>
+          </section>
+          <section>
+            <h6>HTML escaping</h6>
+            <p>
+              Use HTML escaping when untrusted data is inserted between HTML
+              opening and closing tags. These are standards tags such as
+              &lt;body&gt;, &lt;div&gt;, &lt;table&gt;, etc.
+            </p>
+            <pre><code class="hljs html" style="word-wrap: break-word;">&lt;div&gt;If this data is untrusted, it must be HTML-escaped.&lt;/div&gt;
 				</code></pre>
-		  </section>
-		  <section>
-				<h6>JavaScript escaping</h6>
-				<p>Use JavaScript escaping when untrusted data is inserted inside one of your scripts, or in a place where malicious JavaScript may be included. This includes certain HTML attributes 
-					such as style and all event handlers such as onmouseover and onload. </p>
-				<pre><code class="hljs html" style="word-wrap: break-word; width: 1055px;">&lt;script&gt;alert('If this data is untrusted, it must be JavaScript-escaped.')&lt;/script&gt;
+          </section>
+          <section>
+            <h6>JavaScript escaping</h6>
+            <p>
+              Use JavaScript escaping when untrusted data is inserted inside one
+              of your scripts, or in a place where malicious JavaScript may be
+              included.
+              <!-- This includes certain HTML attributes such as style and
+              all event handlers such as onmouseover and onload.
+              -->
+            </p>
+            <pre><code class="hljs html" style="word-wrap: break-word; width: 1055px;">&lt;script&gt;alert('If this data is untrusted, it must be JavaScript-escaped.')&lt;/script&gt;
 &lt;body onload="If this data is untrusted, it must be JavaScript-escaped."&gt;	
 				  </code></pre>
-			</section>
-			<section>
-					<h6>CSS escaping</h6>
-					<p>Use CSS escaping when untrusted data is inserted inside your CSS styles. Many CSS styles can be used to smuggle a script into your page. </p>
-					<pre><code class="hljs html" style="word-wrap: break-word; width: 1055px;">&lt;div style="background-image: If this data is untrusted, it must be CSS-escaped."&gt;
+          </section>
+          <section>
+            <h6>CSS escaping</h6>
+            <p>
+              Use CSS escaping when untrusted data is inserted inside your CSS
+              styles. Many CSS styles can be used to smuggle a script into your
+              page.
+            </p>
+            <pre><code class="hljs html" style="word-wrap: break-word; width: 1055px;">&lt;div style="background-image: If this data is untrusted, it must be CSS-escaped."&gt;
 					  </code></pre>
-				</section>
-	
+          </section>
+
           <section>
             <h5>Encode data on output.</h5>
             <p>
@@ -197,22 +224,27 @@
             <p>
               As a last line of defense, you can use Content Security Policy
               (CSP) to reduce the severity of any XSS vulnerabilities that still
-              occur. <br>It's a browser side mechanism which allows you to create
-              source whitelists for client side resources of your web
-              application, e.g. JavaScript, CSS, images, etc. CSP via special
-              HTTP header instructs the browser to only execute or render
-              resources from those sources.
+              occur. <br />
+              <!--It's a browser side mechanism which allows you to
+              create source whitelists for client side resources of your web
+              application, e.g. JavaScript, CSS, images, etc.-->
+              CSP via special HTTP header instructs the browser to only execute
+              or render resources from those sources.
             </p>
-		  </section>
-		  <section>
-				<p>For example this CSP:</p>
+          </section>
+          <section>
+            <p>For example this CSP:</p>
 
-				<pre><code class="hljs javascript">Content-Security-Policy: default-src: 'self'; 
+            <pre><code class="hljs javascript">Content-Security-Policy: default-src: 'self'; 
     script-src: 'self' static.domain.tld
 				</code></pre>
-				
-				<p>Will instruct web browser to load all resources only from the page's origin and JavaScript source code files additionally from static.domain.tld.</p>
-		  </section>
+
+            <p>
+              Will instruct web browser to load all resources only from the
+              page's origin and JavaScript source code files additionally from
+              static.domain.tld.
+            </p>
+          </section>
 
           <section>
             <h6>Additional information about preventing attacks:</h6>

@@ -2,7 +2,6 @@ https://www.imperva.com/learn/application-security/cross-site-scripting-xss-atta
 https://www.acunetix.com/websitesecurity/cross-site-scripting/
 https://www.acunetix.com/blog/articles/persistent-xss/
 https://www.owasp.org/index.php/Category:OWASP_Top_Ten_Project
-
 https://portswigger.net/web-security/cross-site-scripting
 
 
