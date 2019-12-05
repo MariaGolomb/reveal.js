@@ -89,8 +89,6 @@ Content-Security-Policy: default-src: 'self'; script-src: 'self' static.domain.t
 Will instruct web browser to load all resources only from the page's origin and JavaScript source code files additionally from static.domain.tld.
 
 Links:
-http://github.com - automatic!
-[GitHub](https://cheatsheetseries.owasp.org/cheatsheets/Cross_Site_Scripting_Prevention_Cheat_Sheet.html)
 
 https://www.owasp.org/index.php/XSS_Filter_Evasion_Cheat_Sheet
 https://content-security-policy.com/
