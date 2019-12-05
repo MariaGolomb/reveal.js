@@ -33,15 +33,6 @@
         <section>
           <h1>Cross-site scripting</h1>
         </section>
-        <!---
-        <section>
-          <strong>Cross-Site Scripting (also known as XSS)</strong> is one of
-          the most common application-layer web attacks. <br />
-          This is a type of attack that injects malicious code into web systems,
-          forcing it to produce changed data, replacing links (visible / hidden)
-          or displaying its own advertising on the affected resource.
-        </section>
-      -->
 
         <section>
           <h3>typical Impacts</h3>
@@ -136,10 +127,6 @@
               The simplest and arguably the easiest form of cross-site scripting
               vulnerability elimination would be to pass all external data
               through a filter.
-              <!-- tell
-			Such a filter would remove dangerous keywords, for example, the infamous &lt;script&gt; tag, 
-      JavaScript commands, CSS styles, and other dangerous HTML markups (such as those that contain event handlers.)
-      -->
             </p>
           </section>
           <section>
@@ -149,12 +136,6 @@
               attacks. When escaping, you are telling the web browser that the
               data you are sending should be treated as data and should not be
               interpreted in any other way.
-              <!--- tell
-                 If an attacker manages to put a
-              malicious script on your page, the victim will not be affected
-              because the browser will not execute the script if it is properly
-              escaped.
-              -->
             </p>
           </section>
 
@@ -181,9 +162,6 @@
               Use JavaScript escaping when untrusted data is inserted inside one
               of your scripts, or in a place where malicious JavaScript may be
               included.
-              <!-- This includes certain HTML attributes such as style and
-              all event handlers such as onmouseover and onload.
-              -->
             </p>
             <pre><code class="hljs html" style="word-wrap: break-word; width: 1055px;">&lt;script&gt;alert('If this data is untrusted, it must be JavaScript-escaped.')&lt;/script&gt;
 &lt;body onload="If this data is untrusted, it must be JavaScript-escaped."&gt;	
@@ -225,9 +203,6 @@
               As a last line of defense, you can use Content Security Policy
               (CSP) to reduce the severity of any XSS vulnerabilities that still
               occur. <br />
-              <!--It's a browser side mechanism which allows you to
-              create source whitelists for client side resources of your web
-              application, e.g. JavaScript, CSS, images, etc.-->
               CSP via special HTTP header instructs the browser to only execute
               or render resources from those sources.
             </p>
